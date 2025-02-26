@@ -106,12 +106,7 @@ public class MCglTF implements ModInitializer {
 			};
 		}
 		else {
-			if(FabricLoader.getInstance().isModLoaded("optifabric")) {
-				shaderModActive = () -> net.optifine.shaders.Shaders.isShaderPackInitialized && !net.optifine.shaders.Shaders.currentShaderName.equals(net.optifine.shaders.Shaders.SHADER_PACK_NAME_DEFAULT);
-			}
-			else {
-				shaderModActive = () -> false;
-			}
+			shaderModActive = () -> false;
 			
 			processRenderedGltfModelSelector = (lookup) -> {
 				switch(renderedModelGLProfile) {

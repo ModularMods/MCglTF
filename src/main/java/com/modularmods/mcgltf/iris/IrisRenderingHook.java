@@ -6,6 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import net.irisshaders.batchedentityrendering.impl.WrappableRenderType;
+import net.irisshaders.iris.Iris;
+import net.irisshaders.iris.pipeline.WorldRenderingPhase;
+import net.irisshaders.iris.pipeline.WorldRenderingPipeline;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -19,10 +23,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
-import net.coderbot.batchedentityrendering.impl.WrappableRenderType;
-import net.coderbot.iris.Iris;
-import net.coderbot.iris.pipeline.WorldRenderingPhase;
-import net.coderbot.iris.pipeline.WorldRenderingPipeline;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
