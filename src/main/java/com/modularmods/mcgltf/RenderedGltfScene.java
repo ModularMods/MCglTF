@@ -79,7 +79,7 @@ public class RenderedGltfScene {
 	
 	public void renderForShaderMod() {
 		int currentProgram = GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM);
-		
+
 		if(!skinningCommands.isEmpty()) {
 			GL20.glUseProgram(MCglTF.getInstance().getGlProgramSkinnig());
 			GL11.glEnable(GL30.GL_RASTERIZER_DISCARD);

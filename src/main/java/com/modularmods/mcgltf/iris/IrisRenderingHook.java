@@ -145,87 +145,31 @@ public class IrisRenderingHook {
 		
 		boolean currentCullFace = GL11.glGetBoolean(GL11.GL_CULL_FACE);
 		
-		if(phase != WorldRenderingPhase.NONE) {
-			int currentProgram = shaderInstance.getId();
-			RenderedGltfModel.MODEL_VIEW_MATRIX = GL20.glGetUniformLocation(currentProgram, "iris_ModelViewMat");
-			RenderedGltfModel.NORMAL_MATRIX = GL20.glGetUniformLocation(currentProgram, "iris_NormalMat");
-			int normals = GL20.glGetUniformLocation(currentProgram, "normals");
-			int specular = GL20.glGetUniformLocation(currentProgram, "specular");
-			
-			int currentTextureColor;
-			
-			if(normals != -1) {
-				RenderedGltfModel.NORMAL_MAP_INDEX = GL13.GL_TEXTURE0 + GL20.glGetUniformi(currentProgram, normals);
-				if(specular != -1) {
-					RenderedGltfModel.SPECULAR_MAP_INDEX = GL13.GL_TEXTURE0 + GL20.glGetUniformi(currentProgram, specular);
-					
-					GL13.glActiveTexture(RenderedGltfModel.NORMAL_MAP_INDEX);
-					int currentTextureNormal = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
-					GL13.glActiveTexture(RenderedGltfModel.SPECULAR_MAP_INDEX);
-					int currentTextureSpecular = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
-					GL13.glActiveTexture(GL13.GL_TEXTURE0);
-					currentTextureColor = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
-					
-					commands.forEach(Runnable::run);
-					
-					GL13.glActiveTexture(RenderedGltfModel.NORMAL_MAP_INDEX);
-					GL11.glBindTexture(GL11.GL_TEXTURE_2D, currentTextureNormal);
-					GL13.glActiveTexture(RenderedGltfModel.SPECULAR_MAP_INDEX);
-					GL11.glBindTexture(GL11.GL_TEXTURE_2D, currentTextureSpecular);
-				}
-				else {
-					RenderedGltfModel.SPECULAR_MAP_INDEX = -1;
-					
-					GL13.glActiveTexture(RenderedGltfModel.NORMAL_MAP_INDEX);
-					int currentTextureNormal = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
-					GL13.glActiveTexture(GL13.GL_TEXTURE0);
-					currentTextureColor = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
-					
-					commands.forEach(Runnable::run);
-					
-					GL13.glActiveTexture(RenderedGltfModel.NORMAL_MAP_INDEX);
-					GL11.glBindTexture(GL11.GL_TEXTURE_2D, currentTextureNormal);
-				}
+		int currentTextureColor = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
+		GL13.glActiveTexture(GL13.GL_TEXTURE0 + 2);
+		int currentTextureNormal = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
+		GL13.glActiveTexture(GL13.GL_TEXTURE0 + 1);
+		int currentTextureSpecular = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
+
+		try {
+			if(phase != WorldRenderingPhase.NONE) {
+				int currentProgram = shaderInstance.getId();
+				RenderedGltfModel.MODEL_VIEW_MATRIX = GL20.glGetUniformLocation(currentProgram, "iris_ModelViewMat");
+				RenderedGltfModel.NORMAL_MATRIX = GL20.glGetUniformLocation(currentProgram, "iris_NormalMat");
 			}
 			else {
-				RenderedGltfModel.NORMAL_MAP_INDEX = -1;
-				if(specular != -1) {
-					RenderedGltfModel.SPECULAR_MAP_INDEX = GL13.GL_TEXTURE0 + GL20.glGetUniformi(currentProgram, specular);
-					
-					GL13.glActiveTexture(RenderedGltfModel.SPECULAR_MAP_INDEX);
-					int currentTextureSpecular = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
-					GL13.glActiveTexture(GL13.GL_TEXTURE0);
-					currentTextureColor = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
-					
-					commands.forEach(Runnable::run);
-					
-					GL13.glActiveTexture(RenderedGltfModel.SPECULAR_MAP_INDEX);
-					GL11.glBindTexture(GL11.GL_TEXTURE_2D, currentTextureSpecular);
-				}
-				else {
-					RenderedGltfModel.SPECULAR_MAP_INDEX = -1;
-					
-					GL13.glActiveTexture(GL13.GL_TEXTURE0);
-					currentTextureColor = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
-					
-					commands.forEach(Runnable::run);
-				}
+				RenderedGltfModel.LIGHT0_DIRECTION = new Vector3f(shaderInstance.LIGHT0_DIRECTION.getFloatBuffer());
+				RenderedGltfModel.LIGHT1_DIRECTION = new Vector3f(shaderInstance.LIGHT1_DIRECTION.getFloatBuffer());
 			}
-			
-			GL13.glActiveTexture(GL13.GL_TEXTURE0);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, currentTextureColor);
-		}
-		else {
-			RenderedGltfModel.LIGHT0_DIRECTION = new Vector3f(shaderInstance.LIGHT0_DIRECTION.getFloatBuffer());
-			RenderedGltfModel.LIGHT1_DIRECTION = new Vector3f(shaderInstance.LIGHT1_DIRECTION.getFloatBuffer());
-			
-			GL13.glActiveTexture(GL13.GL_TEXTURE0);
-			int currentTextureColor = GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D);
-			
 			commands.forEach(Runnable::run);
-			
+		} finally {
+			GL20.glDisableVertexAttribArray(RenderedGltfModel.at_tangent);
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, currentTextureColor);
+			GL13.glActiveTexture(GL13.GL_TEXTURE0 + 2);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, currentTextureNormal);
+			GL13.glActiveTexture(GL13.GL_TEXTURE0 + 1);
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, currentTextureSpecular);
 		}
 		
 		if(currentCullFace) GL11.glEnable(GL11.GL_CULL_FACE);

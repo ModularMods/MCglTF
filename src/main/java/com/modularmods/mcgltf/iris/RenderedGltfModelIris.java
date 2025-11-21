@@ -155,11 +155,21 @@ public class RenderedGltfModelIris extends RenderedGltfModel {
 				vanillaMaterialCommand = () -> {
 					GL11.glBindTexture(GL11.GL_TEXTURE_2D, colorMap);
 					GL20.glVertexAttrib4f(vaColor, baseColorFactor[0], baseColorFactor[1], baseColorFactor[2], baseColorFactor[3]);
+
+					// Enhanced transparency handling for vanilla rendering
+					if(baseColorFactor[3] < 1.0f) {
+						GL11.glEnable(GL11.GL_BLEND);
+						GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+					} else {
+						GL11.glDisable(GL11.GL_BLEND);
+					}
+					
 					GL11.glDisable(GL11.GL_CULL_FACE);
 				};
 				shaderModMaterialCommand = () -> {
 					GL13.glActiveTexture(COLOR_MAP_INDEX);
 					GL11.glBindTexture(GL11.GL_TEXTURE_2D, colorMap);
+					
 					if(NORMAL_MAP_INDEX != -1) {
 						GL13.glActiveTexture(NORMAL_MAP_INDEX);
 						GL11.glBindTexture(GL11.GL_TEXTURE_2D, normalMap);
@@ -168,7 +178,26 @@ public class RenderedGltfModelIris extends RenderedGltfModel {
 						GL13.glActiveTexture(SPECULAR_MAP_INDEX);
 						GL11.glBindTexture(GL11.GL_TEXTURE_2D, specularMap);
 					}
-					GL20.glVertexAttrib4f(vaColor, baseColorFactor[0], baseColorFactor[1], baseColorFactor[2], baseColorFactor[3]);
+
+					// Enhanced color attribute with proper alpha handling
+					GL20.glVertexAttrib4f(vaColor, baseColorFactor[0], baseColorFactor[1],
+										  baseColorFactor[2], baseColorFactor[3]);
+
+					// Enhanced transparency handling for Iris shader rendering
+					if(baseColorFactor[3] < 1.0f) {
+						GL11.glEnable(GL11.GL_BLEND);
+						GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+					} else {
+						GL11.glDisable(GL11.GL_BLEND);
+					}
+					
+					// Add entityColor uniform support for shader packs like SEUS PTGI
+					int currentProgram = GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM);
+					int entityColorLocation = GL20.glGetUniformLocation(currentProgram, "entityColor");
+					if (entityColorLocation != -1) {
+						GL20.glUniform4f(entityColorLocation, 1.0f, 1.0f, 1.0f, 0.0f);
+					}
+
 					GL11.glDisable(GL11.GL_CULL_FACE);
 				};
 			}
@@ -176,11 +205,21 @@ public class RenderedGltfModelIris extends RenderedGltfModel {
 				vanillaMaterialCommand = () -> {
 					GL11.glBindTexture(GL11.GL_TEXTURE_2D, colorMap);
 					GL20.glVertexAttrib4f(vaColor, baseColorFactor[0], baseColorFactor[1], baseColorFactor[2], baseColorFactor[3]);
+					
+					// Enhanced transparency handling for vanilla rendering
+					if(baseColorFactor[3] < 1.0f) {
+						GL11.glEnable(GL11.GL_BLEND);
+						GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+					} else {
+						GL11.glDisable(GL11.GL_BLEND);
+					}
+					
 					GL11.glEnable(GL11.GL_CULL_FACE);
 				};
 				shaderModMaterialCommand = () -> {
 					GL13.glActiveTexture(COLOR_MAP_INDEX);
 					GL11.glBindTexture(GL11.GL_TEXTURE_2D, colorMap);
+					
 					if(NORMAL_MAP_INDEX != -1) {
 						GL13.glActiveTexture(NORMAL_MAP_INDEX);
 						GL11.glBindTexture(GL11.GL_TEXTURE_2D, normalMap);
@@ -189,7 +228,26 @@ public class RenderedGltfModelIris extends RenderedGltfModel {
 						GL13.glActiveTexture(SPECULAR_MAP_INDEX);
 						GL11.glBindTexture(GL11.GL_TEXTURE_2D, specularMap);
 					}
-					GL20.glVertexAttrib4f(vaColor, baseColorFactor[0], baseColorFactor[1], baseColorFactor[2], baseColorFactor[3]);
+
+					// Enhanced color attribute with proper alpha handling
+					GL20.glVertexAttrib4f(vaColor, baseColorFactor[0], baseColorFactor[1],
+										  baseColorFactor[2], baseColorFactor[3]);
+
+					// Enhanced transparency handling for Iris shader rendering
+					if(baseColorFactor[3] < 1.0f) {
+						GL11.glEnable(GL11.GL_BLEND);
+						GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+					} else {
+						GL11.glDisable(GL11.GL_BLEND);
+					}
+					
+					// Add entityColor uniform support for shader packs like SEUS PTGI
+					int currentProgram = GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM);
+					int entityColorLocation = GL20.glGetUniformLocation(currentProgram, "entityColor");
+					if (entityColorLocation != -1) {
+						GL20.glUniform4f(entityColorLocation, 1.0f, 1.0f, 1.0f, 0.0f);
+					}
+
 					GL11.glEnable(GL11.GL_CULL_FACE);
 				};
 			}

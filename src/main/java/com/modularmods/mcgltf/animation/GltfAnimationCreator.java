@@ -13,6 +13,7 @@ import de.javagl.jgltf.model.NodeModel;
 import de.javagl.jgltf.model.AnimationModel.Channel;
 import de.javagl.jgltf.model.AnimationModel.Interpolation;
 import de.javagl.jgltf.model.AnimationModel.Sampler;
+import net.minecraft.client.Minecraft;
 
 public final class GltfAnimationCreator {
 
@@ -31,7 +32,6 @@ public final class GltfAnimationCreator {
 				continue;
 			}
 			AccessorFloatData inputFloatData = (AccessorFloatData)inputData;
-			
 			AccessorModel output = sampler.getOutput();
 			AccessorData outputData = output.getAccessorData();
 			if (!(outputData instanceof AccessorFloatData))

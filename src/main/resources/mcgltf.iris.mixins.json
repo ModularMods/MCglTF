@@ -5,9 +5,9 @@
   "package": "com.modularmods.mcgltf.iris.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "MixinBufferUploader",
     "MixinRenderStateShard",
-  	"MixinBufferUploader",
-  	"MixinVertexBuffer"
+    "MixinVertexBuffer"
   ],
   "injectors": {
     "defaultRequire": 1

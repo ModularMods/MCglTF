@@ -43,7 +43,7 @@ public class DefaultAnimationModel extends AbstractNamedModelElement
 {
     /**
      * Default implementation of a 
-     * {@link de.javagl.jgltf.model.AnimationModel.Sampler}
+     * {@link Sampler}
      */
     public static class DefaultSampler implements Sampler
     {
@@ -103,7 +103,7 @@ public class DefaultAnimationModel extends AbstractNamedModelElement
     
     /**
      * Default implementation of a 
-     * {@link de.javagl.jgltf.model.AnimationModel.Channel}
+     * {@link Channel}
      */
     public static class DefaultChannel implements Channel
     {
@@ -163,7 +163,7 @@ public class DefaultAnimationModel extends AbstractNamedModelElement
     }
     
     /**
-     * The {@link de.javagl.jgltf.model.AnimationModel.Channel} instances 
+     * The {@link Channel} instances
      * of this animation
      */
     private final List<Channel> channels;
@@ -177,9 +177,9 @@ public class DefaultAnimationModel extends AbstractNamedModelElement
     }
     
     /**
-     * Add the given {@link de.javagl.jgltf.model.AnimationModel.Channel}
+     * Add the given {@link Channel}
      * 
-     * @param channel The {@link de.javagl.jgltf.model.AnimationModel.Channel}
+     * @param channel The {@link Channel}
      */
     public void addChannel(Channel channel)
     {

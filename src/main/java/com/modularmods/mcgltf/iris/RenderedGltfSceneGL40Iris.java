@@ -32,6 +32,8 @@ public class RenderedGltfSceneGL40Iris extends RenderedGltfSceneGL40 {
 
 	@Override
 	public void renderForShaderMod() {
+		int currentProgram = GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM);
+		
 		if(!skinningCommands.isEmpty()) {
 			GL20.glUseProgram(MCglTF.getInstance().getGlProgramSkinnig());
 			GL11.glEnable(GL30.GL_RASTERIZER_DISCARD);
@@ -39,7 +41,7 @@ public class RenderedGltfSceneGL40Iris extends RenderedGltfSceneGL40 {
 			GL15.glBindBuffer(GL31.GL_TEXTURE_BUFFER, 0);
 			GL40.glBindTransformFeedback(GL40.GL_TRANSFORM_FEEDBACK, 0);
 			GL11.glDisable(GL30.GL_RASTERIZER_DISCARD);
-			GL20.glUseProgram(RenderedGltfModel.CURRENT_SHADER_INSTANCE.getId());
+			GL20.glUseProgram(currentProgram);
 		}
 		
 		shaderModRenderCommands.forEach(Runnable::run);

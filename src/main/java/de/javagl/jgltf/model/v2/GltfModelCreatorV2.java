@@ -802,7 +802,7 @@ public class GltfModelCreatorV2
         }
         String path = animationChannelTarget.getPath();
         
-        AnimationModel.Channel channel = 
+        Channel channel =
             new DefaultChannel(sampler, nodeModel, path);
         return channel;
     }
